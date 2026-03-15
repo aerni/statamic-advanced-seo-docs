@@ -28,14 +28,14 @@ description: Advanced SEO supports all of the following meta tags and scripts.
 * `og:image:width`
 * `og:image:height`
 
-### Twitter
+### X (Twitter)
 
 * `twitter:card`
-* `twitter:title`
-* `twitter:description`
-* `twitter:site`
 * `twitter:image`
-* `twitter:image:alt`
+
+{% hint style="info" %}
+X (Twitter) uses Open Graph tags for the title, description, and image alt text. Only the card type and image are Twitter-specific.
+{% endhint %}
 
 ### Site Verification
 

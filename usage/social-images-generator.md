@@ -1,44 +1,81 @@
 ---
 description: >-
-  The social images generator provides an easy way to generate unique Open Graph
-  and Twitter images for your entries.
+  Automatically generate social images for your entries and taxonomy terms
+  using customizable themes.
 ---
 
 # Social Images Generator
 
 ## Requirements
 
-The generator leverages [Browsershot](https://github.com/spatie/browsershot) and requires a working installation of [Puppeteer](https://github.com/puppeteer/puppeteer) on your server and local machine.
+The generator uses [spatie/laravel-screenshot](https://spatie.be/docs/laravel-screenshot/v1/introduction) under the hood, which supports two screenshot drivers:
+
+* **Browsershot** (default) — Requires [Puppeteer](https://github.com/puppeteer/puppeteer) installed on your server.
+* **Cloudflare Browser Rendering** — A cloud-based alternative that doesn't require Puppeteer.
+
+To configure the screenshot driver, publish the config:
+
+```shell
+php artisan vendor:publish --tag=laravel-screenshot-config
+```
+
+{% tabs %}
+{% tab title="Browsershot (default)" %}
+Browsershot requires [Puppeteer](https://github.com/puppeteer/puppeteer) installed on your server. Refer to the [Browsershot documentation](https://spatie.be/docs/browsershot/v5/requirements) for setup instructions.
+{% endtab %}
+
+{% tab title="Cloudflare Browser Rendering" %}
+Cloudflare Browser Rendering is a cloud-based alternative that doesn't require Puppeteer. Configure the driver in your published `config/screenshot.php`:
+
+```php
+'driver' => 'cloudflare',
+
+'cloudflare' => [
+    'account_id' => env('CLOUDFLARE_ACCOUNT_ID'),
+    'api_token' => env('CLOUDFLARE_API_TOKEN'),
+],
+```
+
+Refer to the [spatie/laravel-screenshot documentation](https://spatie.be/docs/laravel-screenshot/v1/introduction) for more details.
+{% endtab %}
+{% endtabs %}
 
 ## Enable Generator
 
-Enable the social images generator in the addon's config:
+{% stepper %}
+{% step %}
+### Enable globally
+
+Enable the social images generator in your config:
 
 ```php
+// config/advanced-seo.php
 'social_images' => [
     'generator' => [
         'enabled' => true,
     ],
 ],
 ```
+{% endstep %}
 
-Next, head over to the Social Media site defaults in the CP and enable the collections you want to generate images for:
+{% step %}
+### Enable per collection/taxonomy
 
-<figure><img src="../.gitbook/assets/social_images_generator.png" alt=""><figcaption></figcaption></figure>
+Head to the SEO section in the Control Panel. Click the **Configure** button on the collection or taxonomy you want to enable the generator for, and toggle **Social Images Generator** on.
+{% endstep %}
+{% endstepper %}
 
-This will add a Social Images Generator section to the SEO fields of each enabled collection:
-
-<figure><img src="../.gitbook/assets/social_images_generator_entry.png" alt=""><figcaption></figcaption></figure>
+{% hint style="info" %}
+The generator supports both entries and taxonomy terms.
+{% endhint %}
 
 ## Generating Images
 
-There are a couple of different ways to generate your social images. Choose whichever approach makes sense to you.
-
 ### On Save
 
-By default, images are generated every time you save an entry.&#x20;
+Images are automatically generated when you save an entry or term. Smart regeneration ensures images are only regenerated when content actually changes — saving without content changes won't trigger regeneration.
 
-Generating images can be a time-consuming task. It's a good idea to use a queue driver like Redis to move the process into the background. You may configure the `queue` in the config:
+Generation runs asynchronously after the response is sent. For better performance, configure a queue:
 
 ```php
 'social_images' => [
@@ -48,89 +85,53 @@ Generating images can be a time-consuming task. It's a good idea to use a queue 
 ],
 ```
 
-### On-Demand
+### On Demand
 
-When an entry is saved, its previously generated social images are deleted. The new images are generated on-demand with the first request of the entry. Note that this will result in a slower response time on the first request.
-
-To use this approach, set `generate_on_save` to `false` in the config:
-
-```php
-'social_images' => [
-    'generator' => [
-        'generate_on_save' => false,
-    ],
-],
-```
+If a generated image is missing (e.g. accidentally deleted), it will be regenerated on-the-fly on the next frontend request.
 
 ### Action
 
-You may also generate the images at any time using the action in the collection listing view:
-
-<figure><img src="../.gitbook/assets/social_images_generator_action.png" alt=""><figcaption></figcaption></figure>
+You can generate images at any time using the action in the collection or taxonomy listing view.
 
 ### Command
 
-Advanced SEO also provides a command to generate the social images of all entries at once. This can be useful when enabling the generator for an existing collection with many entries.
+Generate social images for all entries and terms at once:
 
-```bash
+```shell
 php please seo:generate-images
 ```
 
-## Templating
+## Unified Social Image
 
-You can design your images like a regular Statamic template, using the full power of Antlers like variables, tags, and partials.
+The generator produces a single Open Graph image that is shared between Open Graph and X (Twitter) meta tags. The **Twitter Card** setting on each [collection/taxonomy configuration](settings-and-defaults.md#collection--taxonomy-configuration) determines which preset is used to resize the shared image for the Twitter meta tags.
 
-### Themes
+## Themes
 
-The generator is built around the concept of themes. You need at least one theme, but you can have as many as you’d like.
+Themes are customizable Antlers templates that define the look of your social images. You can have multiple themes and switch between them in the publish form.
 
-Run the following command to create your first theme:
+To create a theme:
 
-```bash
+```shell
 php please seo:theme {name}
 ```
 
-This will publish a default layout as well as a template for each social image type to `resources/views/social_images`.
+This publishes a default layout and an `open_graph.antlers.html` template to `resources/views/social_images/{name}/`.
 
-If you created multiple themes, you will be able to select the theme of your choice in the `Theme` dropdown:
+For details on creating and customizing themes, see [Social Image Themes](../extending/social-image-themes.md).
 
-<figure><img src="../.gitbook/assets/CleanShot 2023-02-28 at 15.11.45@2x.png" alt=""><figcaption></figcaption></figure>
+### Theme Restrictions
 
-{% hint style="info" %}
-The type of Twitter image that will be generated is determined by the selected **Twitter Card**. Select **Regular** to generate the image using the  **`twitter_summary`** template or select **Large Image** to generate the images using the **`twitter_summary_large_image`** template.
-{% endhint %}
+You can restrict which themes are available for a specific collection or taxonomy in its [configuration](settings-and-defaults.md#collection--taxonomy-configuration).
 
-### Preview
+### Inline Preview
 
-When building your templates, you most likely want to see what you’re doing. You can view your templates according to this pattern:
+The publish form includes an inline preview of the generated social image. When multiple themes are available, you can switch between them to see how each looks before saving.
 
-```
-https://site.test/!/advanced-seo/social-images/{theme}/{type}/{id}
-```
+## Configuration
 
-| Variable | Description              | Values                                                         |
-| -------- | ------------------------ | -------------------------------------------------------------- |
-| `theme`  | The theme to use         | e.g. `default` or `event`                                      |
-| `type`   | The type of social image | `open-graph`, `twitter-summary`, `twitter-summary-large-image` |
-| `id`     | The ID of the entry      | e.g. `4358df35-c7fe-4774-97ad-02af0e2dea3b`                    |
+### Asset Container
 
-A couple of example:
-
-```
-https://site.test/!/advanced-seo/social-images/default/open-graph/4358df35-c7fe-4774-97ad-02af0e2dea3b
-https://site.test/!/advanced-seo/social-images/default/twitter-summary/4358df35-c7fe-4774-97ad-02af0e2dea3b
-https://site.test/!/advanced-seo/social-images/default/twitter-summary-large-image/4358df35-c7fe-4774-97ad-02af0e2dea3b
-```
-
-## Live Preview
-
-You may use Statamic’s live preview feature to preview your social images when editing an entry. Simply click the `Live Preview` button and select the `Open Graph Image` or `Twitter Image` in the target dropdown.
-
-<figure><img src="../.gitbook/assets/CleanShot 2023-02-28 at 15.31.36@2x.png" alt=""><figcaption></figcaption></figure>
-
-## Asset Container
-
-You may configure the asset container for your social images. The images will be saved into a `social_images` directory in the configured container.
+Configure the asset container for your social images. Images are saved in a `social_images` directory within the configured container:
 
 ```php
 'social_images' => [
@@ -138,18 +139,18 @@ You may configure the asset container for your social images. The images will be
 ],
 ```
 
-## Presets
+### Presets
 
-Social image sizes are constantly evolving. You may easily change the `width` and `height` of the generated images by editing the `presets` config:
+Customize the dimensions of your social images:
 
 ```php
 'social_images' => [
     'presets' => [
-        'open_graph' => ['width' => 1200, 'height' => 628],
+        'open_graph' => ['width' => 1200, 'height' => 630],
         'twitter_summary' => ['width' => 240, 'height' => 240],
-        'twitter_summary_large_image' => ['width' => 1100, 'height' => 628],
+        'twitter_summary_large_image' => ['width' => 1200, 'height' => 630],
     ],
-]
+],
 ```
 
-## <br>
+The `open_graph` preset defines the generated image size. The `twitter_summary` and `twitter_summary_large_image` presets define the dimensions used to resize the shared image for the Twitter meta tags via Glide.

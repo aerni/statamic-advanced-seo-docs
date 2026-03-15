@@ -5,6 +5,7 @@
 ## Getting Started
 
 * [Installation](getting-started/installation.md)
+* [Upgrade from v2](getting-started/upgrade.md)
 * [Drivers](getting-started/drivers.md)
 * [Migration](getting-started/migration.md)
 
@@ -16,8 +17,18 @@
 * [Social Images Generator](usage/social-images-generator.md)
 * [Crawling](usage/crawling.md)
 * [Sitemaps](usage/sitemaps.md)
-* [Antlers & Blade](usage/antlers-and-blade.md)
-* [GraphQL](usage/graphql.md)
-* [Custom Routes](usage/custom-routes.md)
 * [Permissions](usage/permissions.md)
-* [Meta Tags & Scripts](usage/meta-tags-and-scripts.md)
+
+## Extending
+
+* [Custom Tokens](extending/tokens.md)
+* [Custom Sitemaps](extending/sitemaps.md)
+* [Custom Routes](extending/custom-routes.md)
+* [Social Image Themes](extending/social-image-themes.md)
+* [Events](extending/events.md)
+
+## Reference
+
+* [Antlers & Blade](reference/antlers-and-blade.md)
+* [GraphQL](reference/graphql.md)
+* [Meta Tags & Scripts](reference/meta-tags-and-scripts.md)
