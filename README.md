@@ -1,0 +1,1 @@
+# statamic-advanced-seo-docs
