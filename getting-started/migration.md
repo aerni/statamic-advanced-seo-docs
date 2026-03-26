@@ -1,3 +1,7 @@
+---
+description: Migrate your existing data from SEO Pro or Aardvark SEO to Advanced SEO.
+---
+
 # Migration
 
 Advanced SEO can help you migrate from SEO Pro and Aardvark SEO. The migrator will process your entries and terms and transform the existing data into the format expected by Advanced SEO.

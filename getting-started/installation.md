@@ -1,6 +1,8 @@
-# Installation
+---
+description: Install Advanced SEO in your Statamic project using Composer.
+---
 
-## Install Addon
+# Installation
 
 Install the addon with Composer:
 
@@ -8,34 +10,10 @@ Install the addon with Composer:
 composer require aerni/advanced-seo
 ```
 
-The installation process will automatically publish the addon's config to `config/advanced-seo.php`. Make sure to check it out, as there are lots of configuration options to tailor the features to your needs.
+Then run the install command to complete the setup:
 
-## Setup Views
-
-Add the head tag somewhere in your layout's `<head>`:
-
-```html
-<head>
-
-    <!-- Antlers -->
-    {{ seo:head }}
-    
-    <!-- Blade -->
-    @seo('head')
-
-</head>
+```shell
+php artisan seo:install
 ```
 
-Add the body tag right after the opening `<body>` in your layout. This tag is only needed when using Google Tag Manager.
-
-```html
-<body>
-
-    <!-- Antlers -->
-    {{ seo:body }}
-    
-    <!-- Blade -->
-    @seo('body')
-
-</body>
-```
+The command will publish the config, add the required SEO tags to your layout, and ask you about optional features like social images generation, and AI content generation. If you're migrating from SEO Pro or Aardvark SEO, the installer will also offer to migrate your existing content.

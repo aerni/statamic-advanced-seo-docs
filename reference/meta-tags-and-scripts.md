@@ -19,11 +19,11 @@ description: Advanced SEO supports all of the following meta tags and scripts.
 
 * `og:type`
 * `og:site_name`
+* `og:locale`
+* `og:locale:alternate`
 * `og:title`
 * `og:description`
 * `og:url`
-* `og:locale`
-* `og:locale:alternate`
 * `og:image`
 * `og:image:width`
 * `og:image:height`
@@ -31,10 +31,14 @@ description: Advanced SEO supports all of the following meta tags and scripts.
 ### X (Twitter)
 
 * `twitter:card`
+* `twitter:title`
+* `twitter:description`
+* `twitter:site`
 * `twitter:image`
+* `twitter:image:alt`
 
 {% hint style="info" %}
-X (Twitter) uses Open Graph tags for the title, description, and image alt text. Only the card type and image are Twitter-specific.
+The title, description, image, and image alt text are populated from their Open Graph counterparts. Only the card type and site handle are Twitter-specific settings.
 {% endhint %}
 
 ### Site Verification
@@ -44,8 +48,9 @@ X (Twitter) uses Open Graph tags for the title, description, and image alt text.
 
 ### Knowledge Graph
 
-* `JSON-LD Schema`
-* `Breadcrumbs`
+* `JSON-LD Site Schema`
+* `JSON-LD Page Schema`
+* `JSON-LD Breadcrumbs`
 
 ### Analytics
 

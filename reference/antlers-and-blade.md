@@ -1,8 +1,12 @@
+---
+description: Access SEO values in your Antlers and Blade views.
+---
+
 # Antlers & Blade
 
 ## Accessing Variables
 
-All the SEO values are processed and added to your views in an array with key `seo`. This array includes all the SEO data of the current entry or term, as well as global site defaults and computed values like `hreflang`.
+All the SEO values are processed and added to your views in an array with key `seo`. This array includes all the SEO data of the current entry or term, as well as global site defaults and computed values.
 
 You may access any of those values like you would with any other value in Antlers or Blade:
 

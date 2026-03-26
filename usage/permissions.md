@@ -1,5 +1,33 @@
+---
+description: Control which users can view and edit SEO settings, defaults, and content.
+---
+
 # Permissions
 
-Advanced SEO provides fine-grained control of your users’ permissions. You decide who can view and edit the site, collection, and taxonomy defaults:
+Advanced SEO adds three permissions under the **Advanced SEO** group:
 
-<figure><img src="../.gitbook/assets/CleanShot 2023-02-28 at 15.50.44@2x.png" alt=""><figcaption></figcaption></figure>
+| Permission | Description |
+| ---------- | ----------- |
+| `configure seo` | Full access to all SEO settings, defaults, configuration, and the SEO tab on entries and terms. |
+| `edit seo defaults` | Edit collection and taxonomy defaults, and access the SEO tab on entries and terms. |
+| `edit seo content` | Access the SEO tab on entries and terms. |
+
+Super users always have full access regardless of permissions.
+
+## How Permissions Work
+
+### Site Defaults
+
+Only users with the `configure seo` permission can edit site defaults.
+
+### Collection & Taxonomy Defaults
+
+Users need the `configure seo` or `edit seo defaults` permission **and** Statamic's native permission for the corresponding content type. For example, to edit SEO defaults for the Pages collection, a user needs `edit seo defaults` plus either Statamic's `configure collections` or `edit pages entries` permission.
+
+### Configuration
+
+Only users with the `configure seo` permission can access the configuration for site, collection, and taxonomy defaults.
+
+### SEO Tab on Entries & Terms
+
+Any of the three permissions grants access to the SEO tab. Additionally, the collection or taxonomy must have its [Editable](settings-and-defaults.md#configuration) toggle enabled.

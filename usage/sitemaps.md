@@ -1,3 +1,7 @@
+---
+description: Automatically generated XML sitemaps for your collections and taxonomies.
+---
+
 # Sitemaps
 
 Advanced SEO generates sitemaps for all of your collections and taxonomies. The sitemaps are organized in a sitemap index, accessible at `/sitemap.xml`.
@@ -17,7 +21,7 @@ php please seo:generate-sitemaps --queue
 ```
 
 {% hint style="info" %}
-Make sure that your current environment is [enabled for crawling](crawling.md). Otherwise, you won't be able to generate the sitemaps.
+Make sure that your current environment is [enabled for crawling](configuration.md#crawling). Otherwise, you won't be able to generate the sitemaps.
 {% endhint %}
 
 The recommended approach is to [schedule the command](https://laravel.com/docs/master/scheduling#scheduling-artisan-commands):

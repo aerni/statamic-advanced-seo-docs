@@ -1,83 +1,32 @@
 ---
-description: >-
-  Register custom sitemaps to add any Statamic or Laravel route to
-  Advanced SEO's sitemap index.
+description: Register custom sitemaps to add any Statamic or Laravel route to Advanced SEO's sitemap index.
 ---
 
-# Custom Sitemaps
+# Sitemaps
 
-Custom sitemaps let you add any route to Advanced SEO's sitemaps. Register them in a service provider's `boot` method.
-
-## Closure-Based Registration
-
-Use the `Sitemap` facade to build and register a custom sitemap:
-
-```php
-use Aerni\AdvancedSeo\Facades\Sitemap;
-
-public function boot(): void
-{
-    Sitemap::index('default')->add(function () {
-        $signIn = Sitemap::makeUrl('https://example.com/sign-in');
-
-        $pricing = Sitemap::makeUrl('https://example.com/pricing')
-            ->lastmod(now())
-            ->changefreq('weekly')
-            ->priority('0.8')
-            ->alternates([
-                ['href' => 'https://example.com/pricing', 'hreflang' => 'en'],
-                ['href' => 'https://example.com/de/pricing', 'hreflang' => 'de'],
-            ]);
-
-        return Sitemap::make('marketing')
-            ->add($signIn)
-            ->add($pricing);
-    });
-}
-```
-
-The first argument to `Sitemap::index()` is the site handle that determines which domain's sitemap index the custom sitemap belongs to.
+Custom sitemaps let you add any route to Advanced SEO's sitemaps. Each custom sitemap declares which site it belongs to, and the sitemap index automatically includes it when generating sitemaps for that site's domain.
 
 ## Class-Based Registration
 
-For larger sitemaps, move the logic into its own class:
-
-```php
-use Aerni\AdvancedSeo\Facades\Sitemap;
-use App\Sitemaps\MarketingSitemap;
-
-public function boot(): void
-{
-    Sitemap::index('default')->add(MarketingSitemap::class);
-}
-```
-
-The sitemap class extends `BaseSitemap` and implements the `urls()` method:
+Create a dedicated class that extends `CustomSitemap`. This is the preferred approach as it keeps your service provider clean:
 
 ```php
 namespace App\Sitemaps;
 
-use Aerni\AdvancedSeo\Facades\Sitemap;
-use Aerni\AdvancedSeo\Sitemaps\BaseSitemap;
+use Aerni\AdvancedSeo\Sitemaps\Custom\CustomSitemap;
 use Illuminate\Support\Collection;
 
-class MarketingSitemap extends BaseSitemap
+class MarketingSitemap extends CustomSitemap
 {
-    public function type(): string
-    {
-        return 'custom';
-    }
+    protected string $handle = 'marketing';
 
-    public function handle(): string
-    {
-        return 'marketing';
-    }
+    protected string $site = 'english';
 
     public function urls(): Collection
     {
         return collect([
-            Sitemap::makeUrl('https://example.com/sign-in'),
-            Sitemap::makeUrl('https://example.com/pricing')
+            $this->makeUrl('https://example.com/sign-in'),
+            $this->makeUrl('https://example.com/pricing')
                 ->lastmod(now())
                 ->changefreq('weekly')
                 ->priority('0.8'),
@@ -86,25 +35,78 @@ class MarketingSitemap extends BaseSitemap
 }
 ```
 
+The `$site` property determines which site's sitemap index the custom sitemap belongs to. If not set, it defaults to the default Statamic site.
+
+Class-based sitemaps can be registered in two ways:
+
+### Via Config
+
+Add the class to the `custom` array in `config/advanced-seo.php`:
+
+```php
+'sitemap' => [
+    'custom' => [
+        App\Sitemaps\MarketingSitemap::class,
+    ],
+],
+```
+
+### Via Service Provider
+
+Register the class in a service provider's `boot` method:
+
+```php
+public function boot(): void
+{
+    \App\Sitemaps\MarketingSitemap::register();
+}
+```
+
+## Inline Registration
+
+For simpler sitemaps, you can use the `Sitemap` facade to build and register a custom sitemap inline:
+
+```php
+use Aerni\AdvancedSeo\Facades\Sitemap;
+use Aerni\AdvancedSeo\Sitemaps\Custom\CustomSitemapUrl;
+
+public function boot(): void
+{
+    Sitemap::make('marketing')
+        ->site('english')
+        ->add('https://example.com/sign-in')
+        ->add('https://example.com/pricing', function (CustomSitemapUrl $url) {
+            $url->lastmod(now())
+                ->changefreq('weekly')
+                ->priority('0.8')
+                ->alternates([
+                    ['href' => 'https://example.com/pricing', 'hreflang' => 'en'],
+                    ['href' => 'https://example.com/de/pricing', 'hreflang' => 'de'],
+                ]);
+        })
+        ->register();
+}
+```
+
 ## API Reference
 
-### Sitemap Facade
+### SitemapBuilder
+
+All setter methods are fluent and return the builder instance:
 
 | Method | Description |
 | --- | --- |
-| `Sitemap::index($site)` | Get the sitemap index for a site |
-| `Sitemap::make($handle)` | Create a new custom sitemap |
-| `Sitemap::makeUrl($loc)` | Create a new sitemap URL |
+| `->site($site)` | Set the site handle (defaults to the default Statamic site) |
+| `->add($url, $callback)` | Add a URL string with an optional callback to configure the `CustomSitemapUrl` |
+| `->register()` | Register this sitemap (must be called last) |
 
 ### CustomSitemapUrl
 
 All setter methods are fluent and return the URL instance:
 
-| Method | Description | Default |
-| --- | --- | --- |
-| `->lastmod($carbon)` | Last modification date | `now()` |
-| `->changefreq($freq)` | Change frequency | From config |
-| `->priority($priority)` | Priority (0.0–1.0) | From config |
-| `->alternates($array)` | Hreflang alternates | `null` |
-
-Valid `changefreq` values: `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never`.
+| Method | Description | Default | Values |
+| --- | --- | --- | --- |
+| `->lastmod($carbon)` | Last modification date | `now()` | A `Carbon` instance |
+| `->changefreq($freq)` | Change frequency | `daily` | `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never` |
+| `->priority($priority)` | Priority | `0.5` | `0.0` to `1.0` in `0.1` increments |
+| `->alternates($array)` | Hreflang alternates | `null` | Array of `['href' => ..., 'hreflang' => ...]` |

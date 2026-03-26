@@ -1,19 +1,27 @@
 ---
-description: >-
-  Automatically generate social images for your entries and taxonomy terms
-  using customizable themes.
+description: Automatically generate social images for your entries and taxonomy terms using customizable themes.
 ---
 
 # Social Images Generator
+
+## Setup
+
+Run the install command and select **Social Images Generator**:
+
+```shell
+php please seo:install
+```
+
+This installs the required dependencies, enables the feature in your config, and creates a default theme.
 
 ## Requirements
 
 The generator uses [spatie/laravel-screenshot](https://spatie.be/docs/laravel-screenshot/v1/introduction) under the hood, which supports two screenshot drivers:
 
-* **Browsershot** (default) — Requires [Puppeteer](https://github.com/puppeteer/puppeteer) installed on your server.
+* **Browsershot** (default) - Requires [Puppeteer](https://github.com/puppeteer/puppeteer) installed on your server.
 * **Cloudflare Browser Rendering** — A cloud-based alternative that doesn't require Puppeteer.
 
-To configure the screenshot driver, publish the config:
+The install command lets you choose your driver and handles the setup. To configure the screenshot driver manually, publish the config:
 
 ```shell
 php artisan vendor:publish --tag=laravel-screenshot-config
@@ -46,7 +54,7 @@ Refer to the [spatie/laravel-screenshot documentation](https://spatie.be/docs/la
 {% step %}
 ### Enable globally
 
-Enable the social images generator in your config:
+The install command enables this automatically. To enable it manually, set the following in your config:
 
 ```php
 // config/advanced-seo.php
@@ -73,7 +81,7 @@ The generator supports both entries and taxonomy terms.
 
 ### On Save
 
-Images are automatically generated when you save an entry or term. Smart regeneration ensures images are only regenerated when content actually changes — saving without content changes won't trigger regeneration.
+Images are automatically generated when you save an entry or term. Smart regeneration ensures images are only regenerated when content actually changes. Saving without content changes won't trigger regeneration.
 
 Generation runs asynchronously after the response is sent. For better performance, configure a queue:
 
@@ -103,54 +111,54 @@ php please seo:generate-images
 
 ## Unified Social Image
 
-The generator produces a single Open Graph image that is shared between Open Graph and X (Twitter) meta tags. The **Twitter Card** setting on each [collection/taxonomy configuration](settings-and-defaults.md#collection--taxonomy-configuration) determines which preset is used to resize the shared image for the Twitter meta tags.
+The generator produces a single Open Graph image that is shared between Open Graph and X (Twitter) meta tags. The **Twitter Card** setting on each [collection/taxonomy configuration](settings-and-defaults.md#configuration) determines which preset is used to resize the shared image for the Twitter meta tags.
 
 ## Themes
 
-Themes are customizable Antlers templates that define the look of your social images. You can have multiple themes and switch between them in the publish form.
+Themes are Antlers templates that define the visual design of your generated social images. You can create multiple themes and switch between them in the publish form.
 
-To create a theme:
+### Creating a Theme
+
+Run the following command to create a new theme:
 
 ```shell
 php please seo:theme {name}
 ```
 
-This publishes a default layout and an `open_graph.antlers.html` template to `resources/views/social_images/{name}/`.
+This publishes a default layout and an `open_graph.antlers.html` template:
 
-For details on creating and customizing themes, see [Social Image Themes](../extending/social-image-themes.md).
+```
+resources/views/social_images/
+├── layout.antlers.html
+└── {name}/
+    └── open_graph.antlers.html
+```
+
+### Template Structure
+
+Each theme needs an `open_graph.antlers.html` template. Design your template like any Statamic view, using the full power of Antlers: variables, tags, partials, and any styling approach you prefer.
+
+The template receives all of the entry or term's augmented data as variables.
+
+### Previewing
+
+You can preview your templates in the browser using this URL pattern:
+
+```
+https://site.test/!/advanced-seo/social-images/{theme}/open-graph/{id}/{site}
+```
+
+| Variable | Description | Example |
+| -------- | ----------- | ------- |
+| `theme` | The theme handle | `default` |
+| `id` | The entry or term ID | `4358df35-c7fe-4774-97ad-02af0e2dea3b` |
+| `site` | The site handle | `default` |
 
 ### Theme Restrictions
 
-You can restrict which themes are available for a specific collection or taxonomy in its [configuration](settings-and-defaults.md#collection--taxonomy-configuration).
+You can restrict which themes are available for a specific collection or taxonomy in its [configuration](settings-and-defaults.md#configuration). When themes are restricted, only the selected themes appear in the theme dropdown on entries and terms.
 
 ### Inline Preview
 
-The publish form includes an inline preview of the generated social image. When multiple themes are available, you can switch between them to see how each looks before saving.
+The social preview in the publish form renders the template used to generate the social image. It updates in real time as you edit the entry or term. When multiple themes are available, you can switch between them to see how each looks before saving.
 
-## Configuration
-
-### Asset Container
-
-Configure the asset container for your social images. Images are saved in a `social_images` directory within the configured container:
-
-```php
-'social_images' => [
-    'container' => 'assets',
-],
-```
-
-### Presets
-
-Customize the dimensions of your social images:
-
-```php
-'social_images' => [
-    'presets' => [
-        'open_graph' => ['width' => 1200, 'height' => 630],
-        'twitter_summary' => ['width' => 240, 'height' => 240],
-        'twitter_summary_large_image' => ['width' => 1200, 'height' => 630],
-    ],
-],
-```
-
-The `open_graph` preset defines the generated image size. The `twitter_summary` and `twitter_summary_large_image` presets define the dimensions used to resize the shared image for the Twitter meta tags via Glide.
