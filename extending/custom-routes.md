@@ -4,34 +4,46 @@ description: Add SEO support to custom Statamic or Laravel routes without reinve
 
 # Custom Routes
 
-You can enable Advanced SEO for custom routes by passing `seo_enabled` along with your SEO data to the view. The data keys correspond to the SEO field handles.
+## Seo::data()
+
+Use the `Seo::data()` fluent builder to add SEO metadata to custom routes:
 
 ```php
-// Works with Statamic routes …
-Route::statamic('/login', 'layout', [
-    'seo_enabled' => true,
-    'seo_title' => 'Login',
-    'seo_description' => 'Welcome back! Login to your account.',
-]);
+use Aerni\AdvancedSeo\Facades\Seo;
 
-// … and with Laravel routes
-Route::get('/login', fn () => view('layout', [
-    'seo_enabled' => true,
-    'seo_title' => 'Login',
-    'seo_description' => 'Welcome back! Login to your account.',
-]));
-```
-
-You can also override site defaults like site name and separator:
-
-```php
-Route::statamic('/login', 'layout', [
-    'seo_enabled' => true,
-    'site_name' => 'Statamic',
-    'separator' => '–',
+Route::statamic('/login', 'login', [
+    'title' => 'Login',
+    ...Seo::data()
+        ->title('Login')
+        ->description('Welcome back! Login to your account.')
+        ->toArray(),
 ]);
 ```
 
-{% hint style="info" %}
-Each value is processed and augmented by the blueprint field corresponding to its key. This means that a value needs to be in the format expected by its field. For example, you can't add an array to the `seo_title` field as it expects a string.
-{% endhint %}
+This also works with regular Laravel routes:
+
+```php
+Route::get('/login', function () {
+    return view('login', [
+        'title' => 'Login',
+        ...Seo::data()
+            ->title('Login')
+            ->description('Welcome back! Login to your account.')
+            ->toArray(),
+    ]);
+});
+```
+
+### Available Methods
+
+| Method | Description |
+| ------ | ----------- |
+| `title(string)` | Set the meta title. |
+| `description(string)` | Set the meta description. |
+| `ogTitle(string)` | Set the Open Graph title. |
+| `ogDescription(string)` | Set the Open Graph description. |
+| `ogImage(string\|Asset)` | Set the Open Graph image. Accepts a URL or Statamic Asset. |
+| `noindex()` | Mark the page as noindex. |
+| `nofollow()` | Mark the page as nofollow. |
+| `canonicalUrl(string)` | Set a custom canonical URL. |
+| `jsonLd(string\|Type)` | Set JSON-LD structured data. Accepts a raw JSON string or a `Spatie\SchemaOrg\Type` instance. |
