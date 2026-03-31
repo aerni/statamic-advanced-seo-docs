@@ -22,11 +22,7 @@ Only users with the `configure seo` permission can edit site defaults.
 
 ### Collection & Taxonomy Defaults
 
-Users need the `configure seo` or `edit seo defaults` permission **and** Statamic's native permission for the corresponding content type. For example, to edit SEO defaults for the Pages collection, a user needs `edit seo defaults` plus either Statamic's `configure collections` or `edit pages entries` permission.
-
-### Configuration
-
-Only users with the `configure seo` permission can access the configuration for site, collection, and taxonomy defaults.
+Users need the `configure seo` or `edit seo defaults` permission **and** Statamic's native permission for the corresponding content type. For example, to edit SEO defaults for the Pages collection, a user needs `edit seo defaults` plus either Statamic's `configure collections` or `edit pages entries` permission. Accessing the configuration requires `configure seo` and the native `configure collections` or `configure taxonomies` permission.
 
 ### SEO Tab on Entries & Terms
 
