@@ -4,6 +4,10 @@ description: Register custom sitemaps to add any Statamic or Laravel route to Ad
 
 # Sitemaps
 
+{% hint style="info" %}
+Custom sitemaps require the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 Custom sitemaps let you add any route to Advanced SEO's sitemaps. Each custom sitemap declares which site it belongs to, and the sitemap index automatically includes it when generating sitemaps for that site's domain.
 
 ## Class-Based Registration

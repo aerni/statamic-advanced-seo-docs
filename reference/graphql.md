@@ -4,6 +4,10 @@ description: Query SEO metadata, defaults, and sitemaps using Advanced SEO's Gra
 
 # GraphQL
 
+{% hint style="info" %}
+The GraphQL API requires the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 ## Enable GraphQL
 
 Enable the GraphQL API in `config/advanced-seo.php`:

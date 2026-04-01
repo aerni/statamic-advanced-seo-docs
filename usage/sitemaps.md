@@ -4,6 +4,10 @@ description: Automatically generated XML sitemaps for your collections and taxon
 
 # Sitemaps
 
+{% hint style="info" %}
+Sitemaps require the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 Advanced SEO generates sitemaps for all of your collections and taxonomies. The sitemaps are organized in a sitemap index, accessible at `/sitemap.xml`.
 
 ## Generating Sitemaps

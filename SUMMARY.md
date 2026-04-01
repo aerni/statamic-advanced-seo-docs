@@ -4,6 +4,7 @@
 
 ## Getting Started
 
+* [Editions](getting-started/editions.md)
 * [Installation](getting-started/installation.md)
 * [Upgrade 2.0 to 3.0](getting-started/upgrade-2-to-3.md)
 

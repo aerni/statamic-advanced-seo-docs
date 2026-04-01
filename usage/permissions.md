@@ -4,6 +4,10 @@ description: Control which users can view and edit SEO settings, defaults, and c
 
 # Permissions
 
+{% hint style="info" %}
+Granular permissions require the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 Advanced SEO adds three permissions under the **Advanced SEO** group:
 
 | Permission | Description |

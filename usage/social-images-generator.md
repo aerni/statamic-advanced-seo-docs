@@ -4,6 +4,10 @@ description: Automatically generate social images for your entries and taxonomy 
 
 # Social Images Generator
 
+{% hint style="info" %}
+The social images generator requires the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 ## Setup
 
 Run the install command and select **Social Images Generator**:

@@ -57,6 +57,10 @@ Each collection and taxonomy also has a configuration that controls how Advanced
 
 ## Origins
 
+{% hint style="info" %}
+Multi-site support requires the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 In a multi-site setup, origins control how SEO defaults are inherited across sites. Each site can inherit its defaults from another site, creating an inheritance chain.
 
 For example, if your German site inherits from your English site, any SEO defaults not explicitly set for German will fall back to the English values. This means you only need to maintain one complete set of defaults and can selectively override values for other sites.

@@ -35,6 +35,10 @@ php please seo:switch-to-file
 
 ### Eloquent Driver
 
+{% hint style="info" %}
+The Eloquent driver requires the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 To use the Eloquent driver, first install the [Statamic Eloquent Driver](https://github.com/statamic/eloquent-driver/tree/master):
 
 ```shell

@@ -4,6 +4,10 @@ description: Register custom token normalizers for additional fieldtypes or add 
 
 # Tokens
 
+{% hint style="info" %}
+Custom tokens require the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 The [token input](../usage/on-page-seo.md#token-input) can be extended in two ways:
 
 * **Token Normalizers** — Convert field values into strings so they can be used as tokens.

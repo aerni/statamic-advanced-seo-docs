@@ -4,6 +4,10 @@ description: Add SEO support to custom Statamic or Laravel routes without reinve
 
 # Custom Routes
 
+{% hint style="info" %}
+Custom routes require the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 ## Seo::data()
 
 Use the `Seo::data()` fluent builder to add SEO metadata to custom routes:

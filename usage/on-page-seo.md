@@ -66,6 +66,10 @@ Previews are approximate. The actual appearance may vary depending on the platfo
 
 ## AI Content Generation
 
+{% hint style="info" %}
+AI content generation requires the [Pro edition](../getting-started/editions.md).
+{% endhint %}
+
 Advanced SEO can generate titles and descriptions using AI. This requires the [Laravel AI SDK](https://github.com/laravel/ai) to be installed and configured.
 
 ### Setup
