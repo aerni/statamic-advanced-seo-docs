@@ -84,4 +84,4 @@ Hreflang tags are unaffected and continue to reference all localized versions ac
 
 ## Custom Sitemaps
 
-You can add custom routes to Advanced SEO's sitemaps. See [Custom Sitemaps](../extending/sitemaps.md) for details.
+Advanced SEO automatically generates sitemaps for collections and taxonomies. If you need to include additional routes (like marketing pages or custom Laravel routes), you can register custom sitemaps using a class-based or inline approach. See [Custom Sitemaps](../extending/sitemaps.md) for details.

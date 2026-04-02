@@ -4,33 +4,27 @@ description: Advanced SEO is available in two editions — a free edition for es
 
 # Editions
 
-Advanced SEO is available in two editions. The **Free** edition covers everything you need for solid on-page SEO. The **Pro** edition unlocks advanced features like sitemaps, multi-site support, and AI content generation.
+Advanced SEO is available in two editions. The **Free** edition covers everything you need for solid on-page SEO, with dynamic token inputs, reset-to-default, and live-updating search and social previews. The **Pro** edition unlocks advanced features like sitemaps, multi-site support, and AI content generation.
 
-## Free
+## Free vs. Pro
 
-Everything you need for solid on-page SEO. Compose titles and descriptions using dynamic tokens pulled from your content fields, preview how they look in search results and social media, and reset any value back to its inherited default.
-
-* Intuitive editing with dynamic token inputs and reset-to-default
-* Live-updating search and social previews
-* Complete meta tag output (Open Graph, hreflang, canonical, JSON-LD, and more)
-* Global site defaults (site name, trackers, verification, and more)
-* Collection and taxonomy defaults inherited by entries and terms
-* Git integration
-* Migration from SEO Pro and Aardvark SEO
-
-## Pro
-
-Unlock the full potential of Advanced SEO. Includes everything from the Free edition, plus:
-
-* Sitemaps
-* Multi-site support
-* AI content generation
-* Social images generator
-* Granular permissions
-* SEO for custom routes
-* Custom tokens for title and description inputs
-* GraphQL API
-* Eloquent driver
+| Feature | Free | Pro |
+|---------|------|-----|
+| [Complete meta output](../reference/meta-tags-and-scripts.md) | ✓ | ✓ |
+| [Global site defaults](../usage/settings-and-defaults.md#site-defaults) | ✓ | ✓ |
+| [Collection and taxonomy defaults](../usage/settings-and-defaults.md#collection--taxonomy-defaults) | ✓ | ✓ |
+| [Intuitive editing with live previews](../usage/on-page-seo.md) | ✓ | ✓ |
+| Git integration | ✓ | ✓ |
+| Migration from SEO Pro and Aardvark SEO | ✓ | ✓ |
+| [Sitemaps](../usage/sitemaps.md) | — | ✓ |
+| Multi-site support | — | ✓ |
+| [AI content generation](../usage/on-page-seo.md#ai-content-generation) | — | ✓ |
+| [Social images generator](../usage/social-images-generator.md) | — | ✓ |
+| [Granular permissions](../usage/permissions.md) | — | ✓ |
+| [Custom routes](../extending/custom-routes.md) | — | ✓ |
+| [Custom tokens](../extending/tokens.md) | — | ✓ |
+| [GraphQL](../reference/graphql.md) | — | ✓ |
+| [Eloquent driver](../usage/configuration.md#eloquent-driver) | — | ✓ |
 
 ## License
 
