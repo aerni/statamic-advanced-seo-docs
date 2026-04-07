@@ -5,7 +5,7 @@ description: Generate SEO titles and descriptions with AI, with site-wide and pe
 # AI Copywriting
 
 {% hint style="info" %}
-AI content generation requires the [Pro edition](../getting-started/editions.md).
+AI copywriting requires the [Pro edition](../getting-started/editions.md).
 {% endhint %}
 
 Advanced SEO can generate meta titles, meta descriptions, OG titles, and OG descriptions using AI. Generation is powered by the [Laravel AI SDK](https://github.com/laravel/ai), so any provider it supports (OpenAI, Anthropic, Google, etc.) works.

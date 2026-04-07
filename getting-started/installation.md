@@ -16,7 +16,7 @@ Then run the install command to complete the setup:
 php artisan seo:install
 ```
 
-The command will publish the config, add the required SEO tags to your layout, and ask you about optional features like social images generation, and AI content generation. If you're migrating from SEO Pro or Aardvark SEO, the installer will also offer to migrate your existing content.
+The command will publish the config, add the required SEO tags to your layout, and ask you about optional features like social images generation, and AI copywriting. If you're migrating from SEO Pro or Aardvark SEO, the installer will also offer to migrate your existing content.
 
 ## Migration
 

@@ -4,7 +4,7 @@ description: Advanced SEO is available in two editions — a free edition for es
 
 # Editions
 
-Advanced SEO is available in two editions. The **Free** edition covers everything you need for solid on-page SEO, with dynamic token inputs, reset-to-default, and live-updating search and social previews. The **Pro** edition unlocks advanced features like sitemaps, multi-site support, and AI content generation.
+Advanced SEO is available in two editions. The **Free** edition covers everything you need for solid on-page SEO, with dynamic token inputs, reset-to-default, and live-updating search and social previews. The **Pro** edition unlocks advanced features like sitemaps, multi-site support, and AI copywriting.
 
 ## Free
 
@@ -23,7 +23,7 @@ Unlock the full potential of Advanced SEO. Includes everything from the Free edi
 
 * [Sitemaps](../usage/sitemaps.md)
 * Multi-site support
-* [AI content generation](../usage/on-page-seo.md#ai-content-generation)
+* [AI copywriting](../usage/ai.md)
 * [Social images generator](../usage/social-images-generator.md)
 * [Granular permissions](../usage/permissions.md)
 * [Custom routes](../extending/custom-routes.md)

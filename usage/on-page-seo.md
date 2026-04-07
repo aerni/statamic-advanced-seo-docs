@@ -1,5 +1,5 @@
 ---
-description: Edit SEO fields on individual entries and terms with dynamic tokens, inline previews, and AI content generation.
+description: Edit SEO fields on individual entries and terms with dynamic tokens, inline previews, and AI copywriting.
 ---
 
 # On-Page SEO

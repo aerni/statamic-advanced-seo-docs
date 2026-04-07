@@ -4,14 +4,14 @@ description: Advanced SEO is a comprehensive SEO addon for Statamic that adapts 
 
 # Introduction
 
-Advanced SEO provides everything you need to get your SEO right. It's built around a polished editing experience with token-based inputs, live-updating previews, and cascading defaults. It handles everything for great search rankings and social sharing, from complete meta output and structured data to sitemaps and more. It's available in two [editions](getting-started/editions.md), with Pro adding multi-site support, AI content generation, granular permissions, GraphQL, and more.
+Advanced SEO provides everything you need to get your SEO right. It's built around a polished editing experience with token-based inputs, live-updating previews, and cascading defaults. It handles everything for great search rankings and social sharing, from complete meta output and structured data to sitemaps and more. It's available in two [editions](getting-started/editions.md), with Pro adding multi-site support, AI copywriting, granular permissions, GraphQL, and more.
 
 ## Features
 
 * Complete meta output with zero configuration
 * Intuitive editing experience with live-updating search and social previews
 * Site, collection, and taxonomy defaults with cascading inheritance
-* Sitemaps, multi-site, AI content generation, permissions, and more with [Pro](getting-started/editions.md)
+* Sitemaps, multi-site, AI copywriting, permissions, and more with [Pro](getting-started/editions.md)
 
 See [Editions](getting-started/editions.md) for the full feature breakdown.
 
