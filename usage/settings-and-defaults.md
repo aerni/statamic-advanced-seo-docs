@@ -32,6 +32,7 @@ The settings are organized into tabs:
 * **Search Appearance** — Site name, title separator, structured data (JSON-LD), and favicons
 * **Social Appearance** — Default OG image and X (Twitter) handle. The OG image cascades down to collection, taxonomy, entry, and term levels as the fallback image.
 * **Indexing** — Global noindex/nofollow and site verification codes. When enabled, these override all collection, taxonomy, entry, and term values.
+* **AI** — Global [instructions](ai.md#instructions) for AI-generated titles and descriptions (Pro)
 * **Analytics** — Fathom, Cloudflare Web Analytics, and Google Tag Manager
 
 {% hint style="info" %}
@@ -54,6 +55,7 @@ Each collection and taxonomy also has a configuration that controls how Advanced
 * **Sitemap** — Include this collection/taxonomy in the XML sitemap.
 * **Twitter Card** — Choose between `summary` and `summary_large_image` for entries/terms.
 * **Social Images Generator** — Enable automatic social image generation and restrict which themes are available.
+* **AI** — Toggle AI copywriting for this collection or taxonomy and provide scoped [instructions](ai.md#instructions) (Pro).
 
 ## Origins
 

@@ -14,6 +14,7 @@
 * [Settings & Defaults](usage/settings-and-defaults.md)
 * [Permissions](usage/permissions.md)
 * [On-Page SEO](usage/on-page-seo.md)
+* [AI Copywriting](usage/ai.md)
 * [Sitemaps](usage/sitemaps.md)
 * [Social Images Generator](usage/social-images-generator.md)
 

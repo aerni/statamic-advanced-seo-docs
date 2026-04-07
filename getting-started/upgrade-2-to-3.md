@@ -388,7 +388,12 @@ The permission system has been simplified. Old granular permissions have been re
 * `edit seo content` — Access the SEO tab on entries and terms
 
 {% hint style="info" %}
-The `edit seo defaults` and `edit seo content` permissions work in conjunction with Statamic's native collection and taxonomy permissions. For example, to edit SEO defaults for the Pages collection, a user needs the `edit seo defaults` permission AND either Statamic's `configure collections` or `edit pages entries` permission.
+Advanced SEO permissions now layer on top of Statamic's native collection and taxonomy permissions:
+
+* To **edit SEO defaults** for a collection or taxonomy, a user needs `edit seo defaults` (or `configure seo`) **and** either Statamic's `configure collections` / `configure taxonomies` or `edit {handle} entries` / `edit {handle} terms` permission.
+* To **configure SEO settings** for a collection or taxonomy, a user needs `configure seo` **and** Statamic's `configure collections` / `configure taxonomies` permission.
+
+We recommend reviewing your roles after upgrading to confirm users have the right combination of Advanced SEO and Statamic permissions.
 {% endhint %}
 
 {% hint style="success" %}

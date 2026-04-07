@@ -201,7 +201,7 @@ Register custom token normalizers and value tokens. See [Tokens](../extending/to
 
 ## AI
 
-See [AI Content Generation](on-page-seo.md#ai-content-generation) for setup and configuration.
+See [AI Copywriting](ai.md) for setup and configuration.
 
 ```php
 'ai' => [

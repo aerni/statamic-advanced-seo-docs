@@ -32,15 +32,29 @@ Every SEO field on an entry or term inherits its value from the [defaults](setti
 
 Titles and descriptions use a token-based input field. Tokens are dynamic placeholders that resolve to field values at render time.
 
-### Using Tokens
+### Adding Tokens
 
-Type `/` or click the `+` button in any title or description field to open the token autocomplete. Select a field from the dropdown to insert it as a token. Double-click an existing token to edit it. Tokens use Antlers syntax and support modifiers:
+Type `/` or click the `+` button in any title or description field to open the token autocomplete, then select a field to insert it as a token. Since tokens use Antlers syntax and support modifiers, you can also type Antlers directly into the field.
 
 ```
 {{ title }}
 {{ title | upper }}
 {{ content | truncate(90, '...') }}
 ```
+
+Tokens render in one of three visual states so you can tell at a glance what kind of value is attached:
+
+* **Blue chip** — a known field token from the entry's blueprint or a registered [custom value token](../extending/tokens.md#value-tokens). Shows the field's display label.
+* **Gray chip** — an Antlers variable the system doesn't recognize as a registered token. This could be an unregistered custom Antlers tag (`{{ company_name }}`), a nested field reference (`{{ foo:bar }}`), or a typo. The variable still resolves correctly on the frontend if it's valid Antlers.
+* **Gray chip with a `{}` marker** — a variable with modifiers attached (`{{ title | upper }}`). The `{}` marker signals there's more going on than the name suggests. Double-click to see the full source.
+
+### Editing Tokens
+
+Double-click an existing token (or press Enter when focused) to edit it. This is useful for adding or adjusting Antlers modifiers, or changing the referenced field.
+
+{% hint style="info" %}
+Complex Antlers like tag pairs and conditionals is technically supported (it renders correctly on the frontend via `Antlers::parse()`), but isn't supported by the editor UI. Such expressions appear as multiple disjointed chips and plain text rather than a single unit, and editing them inline is unreliable. If you need dynamic values from a tag, register a [custom value token](../extending/tokens.md#value-tokens) instead. It'll appear as a proper blue chip in the autocomplete.
+{% endhint %}
 
 The token input shows a character counter with recommended limits. The counter only works with plain text and simple tokens. Custom Antlers with modifiers can't be counted as the final value isn't known at edit time:
 
@@ -53,6 +67,29 @@ The token input shows a character counter with recommended limits. The counter o
 
 Available tokens are derived from the entry or term's blueprint fields. You can also register [custom tokens](../extending/tokens.md) for additional fieldtypes or custom values.
 
+{% hint style="info" %}
+In the content defaults of a collection or taxonomy, the available field tokens are limited to fields that exist in **all** of its blueprints. If a collection has two blueprints and a field only exists in one of them, that field won't be available as a token in the defaults. This ensures the token resolves consistently for every entry or term, regardless of which blueprint it uses.
+{% endhint %}
+
+## Antlers in SEO Fields
+
+Most SEO fields are designed for referencing other fields on your entry, e.g. `{{ title }}`, `{{ intro }}`, or chaining common modifiers like `{{ title | upper }}` or `{{ intro | truncate:160 }}`. The JSON-LD field goes further and often uses Antlers tags (`{{ collection }}`, `{{ nav }}`, `{{ glide }}`, loops, etc.) to build custom schemas.
+
+Since Statamic 6.4.0, field content is parsed in Antlers' [user-content mode](https://github.com/statamic/cms/pull/14092), which restricts which tags and modifiers are available:
+
+* **Variables always resolve** — `{{ any_field_handle }}` works everywhere.
+* **Common modifiers work out of the box** — Statamic ships a generous default allowlist (`upper`, `lower`, `truncate`, `limit`, `markdown`, `format`, and many more). Your app's own custom modifiers are auto-allowed too.
+* **Core tags are mostly restricted by default** — only a handful (`trans`, `widont`, `link`, and a few others) are allowed. Your app's own custom tags are auto-allowed.
+
+If a tag or modifier you use in an SEO field renders nothing or logs a `Runtime Access Violation`, opt into it in `config/statamic/antlers.php`:
+
+```php
+'allowedContentTags' => ['@default', 'collection:*', 'glide:*'],
+'allowedContentModifiers' => ['@default', 'raw', 'some_modifier'],
+```
+
+The `@default` token preserves Statamic's built-in defaults. Tag patterns use `name:*`; modifiers are listed by literal name.
+
 ## Search & Social Previews
 
 The SEO tab includes inline previews that update in real time as you edit:
@@ -64,44 +101,6 @@ The SEO tab includes inline previews that update in real time as you edit:
 Previews are approximate. The actual appearance may vary depending on the platform, device, and other factors.
 {% endhint %}
 
-## AI Content Generation
+## AI Copywriting
 
-{% hint style="info" %}
-AI content generation requires the [Pro edition](../getting-started/editions.md).
-{% endhint %}
-
-Advanced SEO can generate titles and descriptions using AI. This requires the [Laravel AI SDK](https://github.com/laravel/ai) to be installed and configured.
-
-### Setup
-
-Run the install command and select **AI Content Generation**:
-
-```shell
-php please seo:install
-```
-
-This installs the [Laravel AI SDK](https://github.com/laravel/ai) and enables AI in your config. After installation, configure your AI provider in `config/ai.php`. Any provider supported by the Laravel AI SDK works (OpenAI, Anthropic, Google, etc.).
-
-If you don't want Advanced SEO to use the default provider from `config/ai.php`, you can set a specific provider and model in `config/advanced-seo.php`:
-
-```php
-'ai' => [
-    'provider' => 'anthropic',
-    'model' => 'claude-haiku-4-5-20251001',
-],
-```
-
-### Usage
-
-When AI is enabled, a generate action appears in the token input fields. AI can generate:
-
-* Meta titles
-* Meta descriptions
-* OG titles
-* OG descriptions
-
-The AI analyzes the entry or term's content to generate contextual text. It respects the site's language for multilingual generation.
-
-{% hint style="info" %}
-The entry or term needs at least 50 characters of content for AI generation to work.
-{% endhint %}
+Meta titles, meta descriptions, OG titles, and OG descriptions can be generated by AI directly from the SEO tab. See [AI Copywriting](ai.md) for setup, per-collection control, and instructions.
