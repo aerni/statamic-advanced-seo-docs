@@ -186,8 +186,6 @@ The raw field values as stored on the entry or term. Field handles match the blu
 | `canonical_entry` | `String` | The canonical entry ID. |
 | `canonical_custom` | `String` | The custom canonical URL. |
 | `sitemap_enabled` | `Boolean` | Whether the entry is included in the sitemap. |
-| `sitemap_priority` | `String` | The sitemap priority (`0.0`–`1.0`). |
-| `sitemap_change_frequency` | `String` | The sitemap change frequency. |
 | `json_ld` | `String` | The custom JSON-LD. |
 
 ### renderedViews
@@ -223,18 +221,15 @@ The site-wide SEO defaults. Field handles match the site blueprint.
 | `site_json_ld` | `String` | The custom site JSON-LD. |
 | `favicon_svg` | `String` | The SVG favicon. |
 | `og_image` | `String` | The default Open Graph image. |
+| `twitter_card` | `String` | The card type (`summary` or `summary_large_image`). |
 | `twitter_handle` | `String` | The X (Twitter) handle. |
 | `noindex` | `Boolean` | Whether the site is noindexed. |
-| `nofollow` | `Boolean` | Whether the site is nofollowed. |
 | `google_site_verification_code` | `String` | The Google site verification code. |
 | `bing_site_verification_code` | `String` | The Bing site verification code. |
-| `use_fathom` | `Boolean` | Whether to use Fathom Analytics. |
 | `fathom_id` | `String` | The Fathom site ID. |
 | `fathom_spa` | `Boolean` | Whether to enable Fathom SPA mode. |
-| `use_cloudflare_web_analytics` | `Boolean` | Whether to use Cloudflare Web Analytics. |
-| `cloudflare_web_analytics` | `String` | The Cloudflare Web Analytics token. |
-| `use_google_tag_manager` | `Boolean` | Whether to use Google Tag Manager. |
-| `google_tag_manager` | `String` | The Google Tag Manager ID. |
+| `cloudflare_beacon_token` | `String` | The Cloudflare Web Analytics beacon token. |
+| `gtm_container_id` | `String` | The Google Tag Manager container ID. |
 
 ### collectionSet
 
@@ -251,12 +246,7 @@ The SEO defaults for a collection. Field handles match the blueprint with the `s
 | `social_images_theme` | `String` | The social images theme. |
 | `noindex` | `Boolean` | Whether to noindex entries. |
 | `nofollow` | `Boolean` | Whether to nofollow entries. |
-| `canonical_type` | `String` | The default canonical URL type. |
-| `canonical_entry` | `String` | The default canonical entry ID. |
-| `canonical_custom` | `String` | The default custom canonical URL. |
 | `sitemap_enabled` | `Boolean` | Whether entries are included in the sitemap. |
-| `sitemap_priority` | `String` | The default sitemap priority (`0.0`–`1.0`). |
-| `sitemap_change_frequency` | `String` | The default sitemap change frequency. |
 | `json_ld` | `String` | The default JSON-LD. |
 
 ### taxonomySet
@@ -279,8 +269,8 @@ The SEO defaults for a taxonomy. Has the same fields as [collectionSet](#collect
 | ----- | ---- | ----------- |
 | `loc` | `String` | The URL location. |
 | `lastmod` | `String` | The last modification date. |
-| `changefreq` | `String` | The change frequency. |
-| `priority` | `String` | The priority (`0.0`–`1.0`). |
+| `changefreq` | `String` | The change frequency. Only present for custom sitemaps that set this value. |
+| `priority` | `String` | The priority (`0.0`–`1.0`). Only present for custom sitemaps that set this value. |
 | `alternates` | [[SitemapAlternates](#sitemapalternates)] | Hreflang alternates. |
 
 ### SitemapAlternates

@@ -14,7 +14,7 @@ The tab is organized into collapsible sections:
 * **Social Appearance** — OG title, description, image, social images generator settings, and a live social preview.
 * **Indexing** — Noindex and nofollow toggles.
 * **Canonical URL** — Point to the current page, another entry, or a custom URL. Hidden when noindex is enabled.
-* **Sitemap** — Sitemap inclusion, priority, and change frequency.
+* **Sitemap** — Sitemap inclusion toggle.
 * **Structured Data** — Custom JSON-LD.
 
 ### Visibility

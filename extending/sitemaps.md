@@ -111,6 +111,6 @@ All setter methods are fluent and return the URL instance:
 | Method | Description | Default | Values |
 | --- | --- | --- | --- |
 | `->lastmod($carbon)` | Last modification date | `now()` | A `Carbon` instance |
-| `->changefreq($freq)` | Change frequency | `daily` | `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never` |
-| `->priority($priority)` | Priority | `0.5` | `0.0` to `1.0` in `0.1` increments |
+| `->changefreq($freq)` | Change frequency | `null` | `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never` |
+| `->priority($priority)` | Priority | `null` | `0.0` to `1.0` in `0.1` increments |
 | `->alternates($array)` | Hreflang alternates | `null` | Array of `['href' => ..., 'hreflang' => ...]` |

@@ -23,6 +23,9 @@ The following changes require manual action. All other changes are [handled auto
 | [Removed Twitter image generation](upgrade-2-to-3.md#removed-twitter-image-generation) | Low    | Remove custom templates      |
 | [Social images template changes](upgrade-2-to-3.md#template-changes)                   | Low    | Update custom templates      |
 | [Image storage directory](upgrade-2-to-3.md#image-storage-directory)                   | Low    | Delete orphaned images       |
+| [Twitter card setting](upgrade-2-to-3.md#twitter-card-setting)                         | Low    | Set card size in site defaults |
+| [Sitemap settings](upgrade-2-to-3.md#sitemaps)                                        | Low    | Review sitemap settings      |
+| [Nofollow removed from site defaults](upgrade-2-to-3.md#nofollow-removed-from-site-defaults) | Low | Set nofollow per collection  |
 
 ## High Impact Changes
 
@@ -66,6 +69,10 @@ Remove any `advanced_seo` fieldtype fields from your blueprints and delete any c
 ### GraphQL
 
 Affects users of the GraphQL API. All GraphQL changes require updating your queries.
+
+{% hint style="info" %}
+The GraphQL API has been significantly reworked in 3.0. If you'd rather rewrite your queries from scratch, see the [GraphQL reference](../reference/graphql.md) for the current API.
+{% endhint %}
 
 #### Renamed Query and Types
 
@@ -144,40 +151,61 @@ The `baseUrl` argument has been removed from the `seoMeta` query. To rewrite abs
   }
 ```
 
-#### Computed Field Changes
+#### `computed` Field Changes
 
-The following fields have been removed from the `computed` type:
+| Change  | Field                | Notes                      |
+| ------- | -------------------- | -------------------------- |
+| Added   | `twitter_card`       | Returns the card size (`summary` or `summary_large_image`) |
+| Removed | `title`              | Use raw data `title` field |
+| Removed | `og_title`           | Use raw data `og_title` field |
+| Removed | `twitter_title`      | Use raw data `og_title` field |
+| Removed | `twitter_image`      | Use raw data `og_image` field |
+| Removed | `og_image`           | Use raw data `og_image` field |
+| Removed | `generated_og_image` | Use raw data `og_image` field |
 
-| Removed Field      | Use Instead              |
-| ------------------ | ------------------------ |
-| `title`            | Raw data `title` field   |
-| `og_title`         | Raw data `og_title` field |
-| `twitter_title`    | Raw data `og_title` field |
-| `twitter_image`    | Raw data `og_image` field |
-| `og_image`         | Raw data `og_image` field |
-| `generated_og_image` | Raw data `og_image` field |
+#### `siteSet` Field Changes
 
-A new `twitter_card` field has been added to the `computed` type, returning the card size (`summary` or `summary_large_image`).
+| Change  | Field                                                | Notes                      |
+| ------- | ---------------------------------------------------- | -------------------------- |
+| Added   | `twitter_card`                                       | Returns the card size (`summary` or `summary_large_image`) |
+| Renamed | `title_separator` → `separator`                      |                            |
+| Renamed | `cloudflare_web_analytics` → `cloudflare_beacon_token` | More descriptive name      |
+| Renamed | `google_tag_manager` → `gtm_container_id`            | More descriptive name      |
+| Removed | `nofollow`                                           | Now per-collection/entry only |
+| Removed | `use_fathom`                                         | Check `fathom_id` presence instead |
+| Removed | `use_cloudflare_web_analytics`                       | Check `cloudflare_beacon_token` presence instead |
+| Removed | `use_google_tag_manager`                             | Check `gtm_container_id` presence instead |
+| Removed | `twitter_summary_image`                              | Use `og_image`             |
+| Removed | `twitter_summary_large_image`                        | Use `og_image`             |
 
-The following fields have been removed from the `seoMeta` raw type, `collectionSet`, and `taxonomySet` types:
+#### `seoMeta` Raw Type Field Changes
 
-| Removed Field                 | Use Instead   |
-| ----------------------------- | ------------- |
-| `site_name_position`          | Composed into `title` |
-| `twitter_card`                | `seoMeta { computed { twitter_card } }` |
-| `twitter_title`               | `og_title`    |
-| `twitter_description`         | `og_description` |
-| `twitter_summary_image`       | `og_image`    |
-| `twitter_summary_large_image` | `og_image`    |
+| Change  | Field                         | Notes                      |
+| ------- | ----------------------------- | -------------------------- |
+| Removed | `site_name_position`          | Composed into `title`      |
+| Removed | `twitter_card`                | Use `seoSet { site { twitter_card } }` or `seoMeta { computed { twitter_card } }` |
+| Removed | `twitter_title`               | Use `og_title`             |
+| Removed | `twitter_description`         | Use `og_description`       |
+| Removed | `twitter_summary_image`       | Use `og_image`             |
+| Removed | `twitter_summary_large_image` | Use `og_image`             |
+| Removed | `sitemap_priority`            | Google and Bing ignore this value |
+| Removed | `sitemap_change_frequency`    | Google and Bing ignore this value |
 
-The following fields have been removed from the `siteSet` type:
+#### `collectionSet` and `taxonomySet` Field Changes
 
-| Removed Field                 | Use Instead   |
-| ----------------------------- | ------------- |
-| `twitter_summary_image`       | `og_image`    |
-| `twitter_summary_large_image` | `og_image`    |
-
-The `title_separator` field on the `siteSet` type has been renamed to `separator`.
+| Change  | Field                         | Notes                      |
+| ------- | ----------------------------- | -------------------------- |
+| Removed | `site_name_position`          | Composed into `title`      |
+| Removed | `twitter_card`                | Use `seoSet { site { twitter_card } }` or `seoMeta { computed { twitter_card } }` |
+| Removed | `twitter_title`               | Use `og_title`             |
+| Removed | `twitter_description`         | Use `og_description`       |
+| Removed | `twitter_summary_image`       | Use `og_image`             |
+| Removed | `twitter_summary_large_image` | Use `og_image`             |
+| Removed | `sitemap_priority`            | Google and Bing ignore this value |
+| Removed | `sitemap_change_frequency`    | Google and Bing ignore this value |
+| Removed | `canonical_type`              | Per-entry/term only (still on `seoMeta`) |
+| Removed | `canonical_entry`             | Per-entry/term only (still on `seoMeta`) |
+| Removed | `canonical_custom`            | Per-entry/term only (still on `seoMeta`) |
 
 #### `seoSitemaps` Query
 
@@ -209,8 +237,6 @@ The `seoSitemaps` query has been completely restructured for a simpler, flatter 
     urls {
       loc
       lastmod
-      changefreq
-      priority
       alternates { hreflang, href }
     }
   }
@@ -313,16 +339,18 @@ New events have been added:
 
 ### Custom Views
 
-Affects users who published or customized the `_twitter.antlers.html` snippet.
+Affects users who published or customized the `_twitter.antlers.html` or `_analytics.antlers.html` snippets.
 
 Update the following references:
 
-| Old Variable              | New Variable      |
-| ------------------------- | ----------------- |
-| `seo:twitter_title`       | `seo:og_title`    |
-| `seo:twitter_description` | `seo:og_description` |
-| `seo:twitter_image`       | `seo:og_image`    |
-| `seo:twitter_image:alt`   | `seo:og_image:alt` |
+| Old Variable                    | New Variable                 |
+| ------------------------------- | ---------------------------- |
+| `seo:twitter_title`             | `seo:og_title`               |
+| `seo:twitter_description`       | `seo:og_description`         |
+| `seo:twitter_image`             | `seo:og_image`               |
+| `seo:twitter_image:alt`         | `seo:og_image:alt`           |
+| `seo:cloudflare_web_analytics`  | `seo:cloudflare_beacon_token` |
+| `seo:google_tag_manager`        | `seo:gtm_container_id`       |
 
 ### Unified Social Image Field
 
@@ -375,9 +403,33 @@ Generated social images are now stored in `social_images/collection-{handle}/` a
 
 Existing images in the old directory structure will not be migrated automatically. They will be regenerated in the new location on the next save or frontend request. You may delete the orphaned images in the old directories.
 
+### Twitter Card Setting
+
+Affects users who previously set the X (Twitter) card size to `summary` (Small) on any entry, term, or collection/taxonomy default.
+
+The X (Twitter) card size is no longer configurable per entry, term, or collection/taxonomy. It has been moved to the site defaults and applies globally. The default card size is `summary_large_image` (Large). If you previously used `summary` (Small), set your preferred card size in the site defaults after upgrading.
+
+### Nofollow Removed from Site Defaults
+
+The site-wide **nofollow** toggle has been removed from the site defaults. Site-wide nofollow has no practical use case — if you need to prevent crawling entirely, the `crawling.environments` configuration already forces both noindex and nofollow when the environment is not listed.
+
+If you had nofollow enabled in your site defaults, it will no longer be enforced. Nofollow is now managed per collection/taxonomy in the content defaults and per entry/term.
+
+{% hint style="success" %}
+**Automated** — The `nofollow` field is automatically removed from your site defaults data during the upgrade.
+{% endhint %}
+
 ## Automated Changes
 
 Everything in this section is handled by upgrade scripts. No action required. These changes are documented for reference.
+
+### Pro Edition
+
+Existing users are automatically upgraded to the Pro edition. Since Advanced SEO 2.0 didn't have a free edition, all users had access to all features. The upgrade script adds `'aerni/advanced-seo' => 'pro'` to your `config/statamic/editions.php` file to preserve full feature access.
+
+{% hint style="success" %}
+**Automated** — The Pro edition is automatically enabled in your editions config during the upgrade.
+{% endhint %}
 
 ### Permissions
 
@@ -511,7 +563,7 @@ The `title_separator` field in site defaults has been renamed to `separator`.
 
 ### X (Twitter) Social Sharing
 
-The X (Twitter) social sharing has been significantly simplified. Instead of maintaining separate Twitter-specific fields, the addon now uses a unified social image shared between Open Graph and Twitter, with only the card size remaining as a Twitter-specific setting.
+The X (Twitter) social sharing has been significantly simplified. Instead of maintaining separate Twitter-specific fields, the addon now uses a unified social image shared between Open Graph and Twitter. The card size is now a [site-level default](upgrade-2-to-3.md#twitter-card-setting).
 
 #### Removed Fields
 
@@ -519,6 +571,7 @@ The following fields have been removed from entries, terms, and SEO set localiza
 
 | Removed Field                    | Replacement      |
 | -------------------------------- | ---------------- |
+| `seo_twitter_card`               | [Site default](upgrade-2-to-3.md#twitter-card-setting) |
 | `seo_twitter_title`              | Uses `seo_og_title` |
 | `seo_twitter_description`        | Uses `seo_og_description` |
 | `seo_twitter_summary_image`      | Uses `seo_og_image` |
@@ -535,14 +588,6 @@ The following fields have been removed from the site-wide social media defaults:
 **Automated** — Existing Twitter field data is automatically removed from your content during the upgrade.
 {% endhint %}
 
-#### Twitter Card Setting
-
-The `seo_twitter_card` field has been moved from a per-localization setting to a per-collection/taxonomy configuration setting. It is now available in the "Social Appearance" section of the collection/taxonomy config.
-
-{% hint style="success" %}
-**Automated** — The existing `seo_twitter_card` value from the default site's localization is automatically migrated to the collection/taxonomy config.
-{% endhint %}
-
 ### Social Images Generator
 
 #### Per-Collection Settings
@@ -557,14 +602,46 @@ The `social_images_generator_collections` field has been removed from the site d
 
 The social images generator no longer registers live preview targets for entries. Social image previews are now shown directly in the publish form via a new inline preview fieldtype with real-time theme switching.
 
+### Canonical URL
+
+#### Removed from Collection/Taxonomy Defaults
+
+The canonical URL fields (`seo_canonical_type`, `seo_canonical_entry`, `seo_canonical_custom`) have been removed from collection and taxonomy defaults. Canonical URLs are now configured per-entry/term only, since setting a default canonical for an entire collection is not a meaningful SEO configuration.
+
+Entries and terms that inherited the default `current` canonical type are unaffected — `current` is now the hardcoded default on the entry/term level.
+
+#### Renamed Canonical Type and New Term Support
+
+The `other` canonical type has been renamed to `entry`. The canonical type field now uses a button group with three options: **Current**, **Entry**, and **URL**.
+
+If you reference `seo_canonical_type` values in code or templates, update `other` to `entry`.
+
+{% hint style="success" %}
+**Automated** — Existing `other` canonical type values are automatically renamed to `entry`, canonical fields are removed from collection/taxonomy defaults, and `@default` sentinel values on entries and terms are cleaned up during the upgrade.
+{% endhint %}
+
 ### Sitemaps
 
 #### Per-Collection/Taxonomy Settings
 
 The `excluded_collections` and `excluded_taxonomies` fields have been removed from the site defaults. The sitemap is now enabled per-collection/taxonomy using the `sitemap` toggle in the collection/taxonomy config.
 
+{% hint style="warning" %}
+If a collection or taxonomy was excluded from the sitemap in **any** site, the migration conservatively disables the sitemap for that entire collection/taxonomy. After upgrading, review your sitemap settings in the Control Panel and re-enable any collections or taxonomies that should be included.
+{% endhint %}
+
 {% hint style="success" %}
 **Automated** — Your existing settings are automatically migrated to per-collection/taxonomy configuration.
+{% endhint %}
+
+#### Removed Priority and Change Frequency Fields
+
+The **Priority** and **Change Frequency** sitemap fields have been removed from entries, terms, and collection/taxonomy defaults. Google and Bing ignore these values — they rely on their own crawl signals and `<lastmod>` to determine crawl behavior.
+
+Auto-generated sitemaps no longer output `<priority>` or `<changefreq>` XML elements. The [custom sitemaps API](../extending/sitemaps.md) still supports these values for developers who need them.
+
+{% hint style="success" %}
+**Automated** — Existing priority and change frequency values are automatically removed from your content during the upgrade.
 {% endhint %}
 
 #### Domain Scoping
@@ -580,3 +657,11 @@ Each domain now gets its own sitemap index, and its sitemaps only contain URLs f
 {% hint style="info" %}
 Hreflang tags are unaffected and continue to reference all localized versions across domains.
 {% endhint %}
+
+## Troubleshooting
+
+If the automated upgrade script fails or doesn't run, you can trigger it manually using Statamic's built-in command. Pass any version below `3.0.0` as the version you are upgrading from:
+
+```shell
+php please updates:run 2.0.0 --package=aerni/advanced-seo
+```
