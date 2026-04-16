@@ -414,11 +414,7 @@ Everything in this section is handled by upgrade scripts. No action required. Th
 
 ### Pro Edition
 
-Existing users are automatically upgraded to the Pro edition. Since Advanced SEO 2.0 didn't have a free edition, all users had access to all features. The upgrade script adds `'aerni/advanced-seo' => 'pro'` to your `config/statamic/editions.php` file to preserve full feature access.
-
-{% hint style="success" %}
-**Automated** — The Pro edition is automatically enabled in your editions config during the upgrade.
-{% endhint %}
+Existing users are automatically upgraded to the Pro edition by adding `'aerni/advanced-seo' => 'pro'` to `config/statamic/editions.php`. This preserves full feature access since Advanced SEO 2.0 didn't have a free edition.
 
 ### Permissions
 
@@ -427,6 +423,8 @@ The permission system has been simplified. Old granular permissions have been re
 * `configure seo` — Full access to all SEO settings, defaults, and content editing
 * `edit seo defaults` — Edit collection and taxonomy defaults
 * `edit seo content` — Access the SEO tab on entries and terms
+
+All existing roles receive the `edit seo content` permission to maintain backward compatibility.
 
 {% hint style="info" %}
 Advanced SEO permissions now layer on top of Statamic's native collection and taxonomy permissions:
@@ -437,51 +435,29 @@ Advanced SEO permissions now layer on top of Statamic's native collection and ta
 We recommend reviewing your roles after upgrading to confirm users have the right combination of Advanced SEO and Statamic permissions.
 {% endhint %}
 
-{% hint style="success" %}
-**Automated** — User role permissions are automatically migrated. All existing roles receive the `edit seo content` permission to maintain backward compatibility.
-{% endhint %}
-
 ### Single-Site Data Structure
 
-Single-site installations now use the same data structure as multi-site. Config and localization data are stored separately:
+Single-site installations now use the same data structure as multi-site, with site-scoped localization files:
 
 ```diff
   content/seo/collections/pages.yaml
 + content/seo/collections/{site}/pages.yaml
 ```
 
-{% hint style="success" %}
-**Automated** — Your existing data is automatically migrated to the new structure, whether you use file-based storage or the Eloquent driver.
-{% endhint %}
-
 ### Site SEO Sets
 
-The five separate site SEO sets (`site::general`, `site::indexing`, `site::social_media`, `site::analytics`, `site::favicons`) have been consolidated into a single `site::defaults` set. Tabs now provide the UI grouping within a single publish form.
-
-For file-based installations, the file structure has changed:
+The five separate site SEO sets (`site::general`, `site::indexing`, `site::social_media`, `site::analytics`, `site::favicons`) have been consolidated into a single `site::defaults` set, with tabs providing the UI grouping. For file-based installations, the file structure has changed accordingly:
 
 ```diff
-- content/seo/site/general.yaml
-- content/seo/site/indexing.yaml
-- content/seo/site/social_media.yaml
-- content/seo/site/analytics.yaml
-- content/seo/site/favicons.yaml
-- content/seo/site/{site}/general.yaml
-- content/seo/site/{site}/indexing.yaml
-- content/seo/site/{site}/social_media.yaml
-- content/seo/site/{site}/analytics.yaml
-- content/seo/site/{site}/favicons.yaml
+- content/seo/site/{general,indexing,social_media,analytics,favicons}.yaml
+- content/seo/site/{site}/{general,indexing,social_media,analytics,favicons}.yaml
 + content/seo/site/defaults.yaml
 + content/seo/site/{site}/defaults.yaml
 ```
 
-{% hint style="success" %}
-**Automated** — Your existing config and localization data is automatically merged into the single `site::defaults` set.
-{% endhint %}
-
 ### Disabled Collections and Taxonomies
 
-The `disabled` configuration option has been removed from `config/advanced-seo.php`:
+The `disabled` configuration option has been removed from `config/advanced-seo.php`. Collections and taxonomies are now disabled individually through the Control Panel via the "Configure" button on each set.
 
 ```diff
 - 'disabled' => [
@@ -490,29 +466,13 @@ The `disabled` configuration option has been removed from `config/advanced-seo.p
 - ],
 ```
 
-Collections and taxonomies can now be disabled individually through the Control Panel by clicking the "Configure" button on each set.
-
-{% hint style="success" %}
-**Automated** — Your existing disabled collections and taxonomies are automatically migrated. You can safely remove the `disabled` option from your published config file.
-{% endhint %}
-
 ### Localization Origin Field
 
 The `origin` field has been removed from localizations. Origin configuration is now stored centrally in the set config using an `origins` array.
 
-{% hint style="success" %}
-**Automated** — Your existing origin configuration is automatically migrated from localizations to the set config.
-{% endhint %}
-
 ### Eloquent Driver
 
-If you're using the Eloquent driver, the database schema has changed:
-
-The `advanced_seo_defaults` table has been replaced by `seo_set_localizations`. A new `seo_set_configs` table has been added to store configuration data (enabled state, origins, etc.).
-
-{% hint style="success" %}
-**Automated** — New migrations are published and run automatically. Data is migrated from the old table to the new tables, and the old `advanced_seo_defaults` table is dropped.
-{% endhint %}
+The `advanced_seo_defaults` table has been replaced by `seo_set_localizations`. A new `seo_set_configs` table stores configuration data (enabled state, origins, etc.). New migrations are published and run automatically, and the old table is dropped after data is migrated.
 
 ### SEO Field Values
 
@@ -522,15 +482,11 @@ The SEO source fields have been simplified from a three-state toggle (Auto/Defau
 
 #### Field Handle Syntax Replaced
 
-The `@field:handle` syntax for referencing other fields has been replaced with standard Antlers `{{ handle }}` syntax. You can now use the full power of Antlers in your SEO fields, including modifiers like `{{ content | truncate(90, '...') }}`.
-
-{% hint style="success" %}
-**Automated** — All `@field:handle` references, as well as `@auto` and `@null` sentinel values, are automatically migrated.
-{% endhint %}
+The `@field:handle` syntax for referencing other fields has been replaced with standard Antlers `{{ handle }}` syntax. You can now use the full power of Antlers in your SEO fields, including modifiers like `{{ content | truncate(90, '...') }}`. The `@auto` and `@null` sentinel values are also migrated.
 
 #### Site Name Position Composed into Title
 
-The `seo_site_name_position` field has been removed. Its value is now composed directly into the `seo_title` field using Antlers syntax, giving you full control over the title format.
+The `seo_site_name_position` field has been removed. Its value is composed directly into the `seo_title` field using Antlers syntax, giving you full control over the title format:
 
 | Position   | Resulting `seo_title`                              |
 | ---------- | -------------------------------------------------- |
@@ -538,17 +494,9 @@ The `seo_site_name_position` field has been removed. Its value is now composed d
 | `end`      | `{{ title }} {{ separator }} {{ site_name }}`      |
 | `disabled` | `{{ title }}`                                      |
 
-{% hint style="success" %}
-**Automated** — The position is automatically composed into the title during the upgrade.
-{% endhint %}
-
 #### Title Separator Renamed
 
 The `title_separator` field in site defaults has been renamed to `separator`.
-
-{% hint style="success" %}
-**Automated** — Existing `title_separator` values are automatically renamed to `separator` across all site localizations.
-{% endhint %}
 
 ### X (Twitter) Social Sharing
 
@@ -573,27 +521,15 @@ The following fields have been removed from the site-wide social media defaults:
 | `twitter_summary_image`          | Uses `og_image`  |
 | `twitter_summary_large_image`    | Uses `og_image`  |
 
-{% hint style="success" %}
-**Automated** — Existing Twitter field data is automatically removed from your content during the upgrade.
-{% endhint %}
-
 ### Nofollow Removed from Site Defaults
 
 The site-wide **nofollow** toggle has been removed from the site defaults. It has no practical use case (if you need to prevent crawling entirely, the `crawling.environments` configuration already forces both noindex and nofollow when the environment is not listed). Nofollow is now managed per collection/taxonomy in the content defaults and per entry/term.
-
-{% hint style="success" %}
-**Automated** — The `nofollow` field is automatically removed from your site defaults data during the upgrade.
-{% endhint %}
 
 ### Social Images Generator
 
 #### Per-Collection Settings
 
 The `social_images_generator_collections` field has been removed from the site defaults. The social images generator is now enabled per-collection using the `social_images_generator` toggle in the collection config.
-
-{% hint style="success" %}
-**Automated** — Your existing settings are automatically migrated to per-collection configuration.
-{% endhint %}
 
 #### Removed Social Image Preview Targets
 
@@ -609,13 +545,7 @@ Entries and terms that inherited the default `current` canonical type are unaffe
 
 #### Renamed Canonical Type and New Term Support
 
-The `other` canonical type has been renamed to `entry`. The canonical type field now uses a button group with three options: **Current**, **Entry**, and **URL**.
-
-If you reference `seo_canonical_type` values in code or templates, update `other` to `entry`.
-
-{% hint style="success" %}
-**Automated** — Existing `other` canonical type values are automatically renamed to `entry`, canonical fields are removed from collection/taxonomy defaults, and `@default` sentinel values on entries and terms are cleaned up during the upgrade.
-{% endhint %}
+The `other` canonical type has been renamed to `entry`. The canonical type field now uses a button group with three options: **Current**, **Entry**, and **URL**. If you reference `seo_canonical_type` values in code or templates, update `other` to `entry`.
 
 ### Sitemaps
 
@@ -627,19 +557,9 @@ The `excluded_collections` and `excluded_taxonomies` fields have been removed fr
 If a collection or taxonomy was excluded from the sitemap in **any** site, the migration conservatively disables the sitemap for that entire collection/taxonomy. After upgrading, review your sitemap settings in the Control Panel and re-enable any collections or taxonomies that should be included.
 {% endhint %}
 
-{% hint style="success" %}
-**Automated** — Your existing settings are automatically migrated to per-collection/taxonomy configuration.
-{% endhint %}
-
 #### Removed Priority and Change Frequency Fields
 
-The **Priority** and **Change Frequency** sitemap fields have been removed from entries, terms, and collection/taxonomy defaults. Google and Bing ignore these values — they rely on their own crawl signals and `<lastmod>` to determine crawl behavior.
-
-Auto-generated sitemaps no longer output `<priority>` or `<changefreq>` XML elements. The [custom sitemaps API](../extending/sitemaps.md) still supports these values for developers who need them.
-
-{% hint style="success" %}
-**Automated** — Existing priority and change frequency values are automatically removed from your content during the upgrade.
-{% endhint %}
+The **Priority** and **Change Frequency** sitemap fields have been removed from entries, terms, and collection/taxonomy defaults. Google and Bing ignore these values. Auto-generated sitemaps no longer output `<priority>` or `<changefreq>` XML elements, though the [custom sitemaps API](../extending/sitemaps.md) still supports them.
 
 #### Domain Scoping
 
