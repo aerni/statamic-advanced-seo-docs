@@ -25,7 +25,6 @@ The following changes require manual action. All other changes are [handled auto
 | [Image storage directory](upgrade-2-to-3.md#image-storage-directory)                   | Low    | Delete orphaned images       |
 | [Twitter card setting](upgrade-2-to-3.md#twitter-card-setting)                         | Low    | Set card size in site defaults |
 | [Sitemap settings](upgrade-2-to-3.md#sitemaps)                                        | Low    | Review sitemap settings      |
-| [Nofollow removed from site defaults](upgrade-2-to-3.md#nofollow-removed-from-site-defaults) | Low | Set nofollow per collection  |
 
 ## High Impact Changes
 
@@ -256,7 +255,7 @@ Key changes:
 
 Affects users who registered custom sitemaps.
 
-The custom sitemaps API has been reworked. Closure-based registration via `Sitemap::register()` is no longer supported. Custom sitemaps now explicitly declare their site using the the `$site` property, and the sitemap index automatically includes them. The site defaults to the default Statamic site if not set.
+The custom sitemaps API has been reworked. Closure-based registration via `Sitemap::register()` is no longer supported. Custom sitemaps now explicitly declare their site using the `$site` property, and the sitemap index automatically includes them. The site defaults to the default Statamic site if not set.
 
 #### Inline Sitemaps
 
@@ -408,16 +407,6 @@ Existing images in the old directory structure will not be migrated automaticall
 Affects users who previously set the X (Twitter) card size to `summary` (Small) on any entry, term, or collection/taxonomy default.
 
 The X (Twitter) card size is no longer configurable per entry, term, or collection/taxonomy. It has been moved to the site defaults and applies globally. The default card size is `summary_large_image` (Large). If you previously used `summary` (Small), set your preferred card size in the site defaults after upgrading.
-
-### Nofollow Removed from Site Defaults
-
-The site-wide **nofollow** toggle has been removed from the site defaults. Site-wide nofollow has no practical use case — if you need to prevent crawling entirely, the `crawling.environments` configuration already forces both noindex and nofollow when the environment is not listed.
-
-If you had nofollow enabled in your site defaults, it will no longer be enforced. Nofollow is now managed per collection/taxonomy in the content defaults and per entry/term.
-
-{% hint style="success" %}
-**Automated** — The `nofollow` field is automatically removed from your site defaults data during the upgrade.
-{% endhint %}
 
 ## Automated Changes
 
@@ -586,6 +575,14 @@ The following fields have been removed from the site-wide social media defaults:
 
 {% hint style="success" %}
 **Automated** — Existing Twitter field data is automatically removed from your content during the upgrade.
+{% endhint %}
+
+### Nofollow Removed from Site Defaults
+
+The site-wide **nofollow** toggle has been removed from the site defaults. It has no practical use case (if you need to prevent crawling entirely, the `crawling.environments` configuration already forces both noindex and nofollow when the environment is not listed). Nofollow is now managed per collection/taxonomy in the content defaults and per entry/term.
+
+{% hint style="success" %}
+**Automated** — The `nofollow` field is automatically removed from your site defaults data during the upgrade.
 {% endhint %}
 
 ### Social Images Generator
