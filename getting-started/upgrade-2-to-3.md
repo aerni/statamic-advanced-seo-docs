@@ -4,7 +4,24 @@ description: Upgrade from Advanced SEO 2.0 to 3.0. Most breaking changes are han
 
 # Upgrade 2.0 to 3.0
 
-Advanced SEO 3.0 introduces a significant internal refactor that improves the architecture, maintainability, and user experience of the addon. Most breaking changes have automated upgrade scripts, so the upgrade should be seamless for most users.
+Advanced SEO 3.0 introduces a significant internal refactor that improves the architecture, maintainability, and user experience of the addon. Most breaking changes have automated upgrade scripts, so the upgrade should be seamless for most users. First read through this guide to see if there's anything you need to adjust. Most items only apply if you've customized blueprints, published views, or written custom code against the GraphQL or sitemap APIs.
+
+## Upgrade using Composer
+
+In your `composer.json`, change the requirement from:
+
+```diff
+- "aerni/advanced-seo": "^2.0"
++ "aerni/advanced-seo": "^3.0"
+```
+
+Then run:
+
+```shell
+composer update aerni/advanced-seo --with-dependencies
+```
+
+Automated upgrade scripts should run right after installation. If they don't trigger, see [Troubleshooting](upgrade-2-to-3.md#troubleshooting).
 
 ## Upgrade Summary
 
